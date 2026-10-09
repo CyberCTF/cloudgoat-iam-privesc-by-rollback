@@ -57,5 +57,15 @@
       }
     ]
   },
-  "message": null
+  "cloud": {
+    "provider": "aws",
+    "terraform": "app/cloudgoat/scenarios/aws/iam_privesc_by_rollback/terraform",
+    "outputs": [
+      "access_key_id",
+      "secret_key"
+    ],
+    "inputs": [],
+    "hourly_usd": 0.0
+  },
+  "message": "You are the IAM user Raynor:\n  aws configure --profile raynor   # access key {{ cloud.outputs.access_key_id }}\n                                   # secret key {{ cloud.outputs.secret_key }}\nGoal: full administrator access. Cheat sheet:\napp/cloudgoat/scenarios/aws/iam_privesc_by_rollback/cheat_sheet_raynor.md\n"
 }
