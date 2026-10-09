@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://www.isoloom.com/schema/v1.json
+# CloudGoat iam_privesc_by_rollback by Rhino Security Labs
+# (https://github.com/RhinoSecurityLabs/cloudgoat): starting as the highly limited IAM user Raynor,
+# review the earlier versions of Raynor's policy and restore one that grants full admin. IAM only.
+# Source in app/ (upstream, unchanged); the Terraform root is the scenario's own terraform/ folder,
+# fed the variables CloudGoat's CLI would pass (profile, cgid). Its deploy step calls the AWS CLI
+# with `--profile <profile>`: that profile must be signed in (`aws login`).
+# Run: `aws login`, then `isoloom run cloud-services`; end it with `isoloom down cloud-services`.
+version: 1
+name: cloudgoat-iam-privesc-by-rollback
+
+cloud:
+  provider: aws
+  terraform: app/cloudgoat/scenarios/aws/iam_privesc_by_rollback/terraform
+  vars:
+    region: us-east-1
+    profile: default
+    cgid: isoloom
+  outputs:
+    access_key_id: raynor_access_key_id
+    secret_key: raynor_secret_access_key
+  hourly_usd: 0
+
+checks:
+  - name: the user Raynor can sign in and the policy has its five versions
+    script: checks/start.sh
+    wait: 120
+
+message: |
+  You are the IAM user Raynor:
+    aws configure --profile raynor   # access key {{ cloud.outputs.access_key_id }}
+                                     # secret key {{ cloud.outputs.secret_key }}
+  Goal: full administrator access. Cheat sheet:
+  app/cloudgoat/scenarios/aws/iam_privesc_by_rollback/cheat_sheet_raynor.md

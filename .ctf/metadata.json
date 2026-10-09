@@ -1,0 +1,8 @@
+{
+  "title": "CloudGoat: IAM privesc by rollback",
+  "description": "A CloudGoat scenario by Rhino Security Labs, deployed into your own AWS account: starting as the highly limited IAM user Raynor, review the earlier versions of the policy attached to you and restore the one that grants full administrator access.",
+  "question": "Escalate from the IAM user Raynor to full administrator access.",
+  "category": "MISC",
+  "difficulty": 1,
+  "evidence_kind": "SECRET"
+}
